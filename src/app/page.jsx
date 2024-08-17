@@ -21,7 +21,7 @@ export default async function Home() {
           src={'./branding/icons/icon_google.svg'}
           width={15}
           height={15}/>
-          <p>Sign up with Googlee</p>
+          <p>Sign up with Google</p>
         </div>
         <p className="bettweenForm">or</p>
         <div className="buttonSignUp">
