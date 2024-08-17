@@ -24,8 +24,8 @@ export default async function Home() {
           <p>Sign up with Google</p>
         </div>
         <p className="bettweenForm">or</p>
-        <div className="buttonSignUp">
-          <p>Create an Account</p>
+        <div className="mainButton">
+          <p >Create an Account</p>
         </div>
         <p className="small">By signing up, you agree to the Terms of Service and Privacy Policy, including Cookie Use.</p>
         <p>Have an account already? <a className="text-blue-500" href="www.nikodola.art">Login</a></p>
