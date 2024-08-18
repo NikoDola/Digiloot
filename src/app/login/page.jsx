@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 
 
 export default function loginTest(){
+    console.log(`auth:${auth}, provider:${provider}`)
     const [user, setUser] = useState(null)
 
 

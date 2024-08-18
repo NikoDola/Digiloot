@@ -4,13 +4,12 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDy3ewvQHBppsCsSBVkEAzKOhcT_kzC0Ow",
-  authDomain: "fir-10-4f552.firebaseapp.com",
-  databaseURL: "https://fir-10-4f552-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "fir-10-4f552",
-  storageBucket: "fir-10-4f552.appspot.com",
-  messagingSenderId: "370559014043",
-  appId: "1:370559014043:web:403908c6a4463c3111e23e"
+  apiKey: "AIzaSyDGRpnoe-hWkKaYTTU6JCPcZIDGLz7xwVo",
+  authDomain: "testing23-5f4ec.firebaseapp.com",
+  projectId: "testing23-5f4ec",
+  storageBucket: "testing23-5f4ec.appspot.com",
+  messagingSenderId: "1060839012537",
+  appId: "1:1060839012537:web:4952b6b9693cbe304d8368"
 };
 
 // Initialize Firebase

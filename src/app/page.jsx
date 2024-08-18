@@ -1,8 +1,8 @@
 "use client";
 import Image from "next/image";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {  signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useState, useEffect } from "react";
-import { provider } from "../Server/firebase"; // 
+import { provider, auth } from "../Server/firebase";
 
 export default function Home() {
   const [logIn, setLogIn] = useState(null);
@@ -10,7 +10,7 @@ export default function Home() {
 
 
 const handleSignIn = async () =>{
-  const auth = getAuth()
+ 
   const result = await signInWithPopup(auth, provider)
  
   const credential = GoogleAuthProvider.credentialFromResult(result)
@@ -67,6 +67,7 @@ const handleSignIn = async () =>{
             Login
           </a>
         </p>
+        <p>{`welcome ${user}`}</p>
       </div>
     </main>
   );
