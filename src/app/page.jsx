@@ -1,37 +1,73 @@
+"use client";
 import Image from "next/image";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { useState, useEffect } from "react";
+import { provider } from "../Server/firebase"; // 
 
-export default async function Home() {
+export default function Home() {
+  const [logIn, setLogIn] = useState(null);
+  const [user, setUser] = useState(null); 
+
+
+const handleSignIn = async () =>{
+  const auth = getAuth()
+  const result = await signInWithPopup(auth, provider)
+ 
+  const credential = GoogleAuthProvider.credentialFromResult(result)
+  const token = credential.accessToken;
+  const user = result.user
+  setUser(user)
+  setLogIn(true)
+  
+}
+
+  // Uncomment the following line if you want to trigger sign-in automatically on component mount
+  // useEffect(() => {
+  //   handleSignIn();
+  // }, []); // Empty dependency array means this runs once on component mount
 
   return (
-    <main >
+    <main>
       <div className="logInSignInForm">
-        <Image className="logo"
-            src={'./branding/logo/vozise_text_logo.svg'}
-            width={200}
-            height={15}/>
+        <Image
+          className="logo"
+          src={'/branding/logo/vozise_text_logo.svg'}
+          width={200}
+          height={15}
+          alt="Vozise Logo"
+        />
         <div className="buttonSignUp">
-          <Image 
-          src={'../branding/icons/icon_apple.svg'}
-          width={15}
-          height={15}/>
+          <Image
+            src={'/branding/icons/icon_apple.svg'}
+            width={15}
+            height={15}
+            alt="Apple Icon"
+          />
           <p>Sign up with Apple</p>
         </div>
-        <div className="buttonSignUp">
-          <Image 
-          src={'./branding/icons/icon_google.svg'}
-          width={15}
-          height={15}/>
+        <div className="buttonSignUp" onClick={handleSignIn}>
+          <Image
+            src={'/branding/icons/icon_google.svg'}
+            width={15}
+            height={15}
+            alt="Google Icon"
+          />
           <p>Sign up with Google</p>
         </div>
         <p className="bettweenForm">or</p>
         <div className="mainButton">
-          <p >Create an Account</p>
+          <p>Create an Account</p>
         </div>
-        <p className="small">By signing up, you agree to the Terms of Service and Privacy Policy, including Cookie Use.</p>
-        <p>Have an account already? <a className="text-blue-500" href="www.nikodola.art">Login</a></p>
+        <p className="small">
+          By signing up, you agree to the Terms of Service and Privacy Policy, including Cookie Use.
+        </p>
+        <p>
+          Have an account already?{" "}
+          <a className="text-blue-500" href="www.nikodola.art">
+            Login
+          </a>
+        </p>
       </div>
-      
-
     </main>
   );
 }
