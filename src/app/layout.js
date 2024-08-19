@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { UserProvider } from "../ClientComponents/userContext";
 // import NavMenu from '../ClientComponents/NavMenu'
 
 
@@ -13,11 +14,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      
-      <body className={inter.className}>
-
-        {/* <NavMenu/> */}
-        {children}
+      <body>
+        <UserProvider>
+          {children}
+        </UserProvider>
       </body>
     </html>
   );
