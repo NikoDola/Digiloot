@@ -9,9 +9,13 @@ export default function Home() {
   const { user, signIn } = useUser();
   const router = useRouter();
 
-  const handleSignIn = async () => {
-    await signIn();
-    router.push("/profile");
+  const handleSignIn = async (providerName) => {
+    try {
+      await signIn(providerName); 
+      router.push("/profile");
+    } catch (error) {
+      console.error("Error during sign-in:", error);
+    }
   };
 
   return (
@@ -24,16 +28,16 @@ export default function Home() {
           height={15}
           alt="Vozise Logo"
         />
-        <div className="buttonSignUp">
+        <div className="buttonSignUp" name="github" onClick={()=> handleSignIn("github")}>
           <Image
             src={"/branding/icons/icon_github.svg"}
             width={15}
             height={15}
-            alt="Apple Icon"
+            alt="GitHub Icon"
           />
-          <p>Sign up with Apple</p>
+          <p>Sign up with GitHub</p>
         </div>
-        <div className="buttonSignUp" onClick={handleSignIn}>
+        <div className="buttonSignUp" name="google" onClick={()=> handleSignIn('google')}>
           <Image
             src={"/branding/icons/icon_google.svg"}
             width={15}

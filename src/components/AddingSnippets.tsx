@@ -41,27 +41,30 @@ export default function FormComponent() {
 
     return (
         <main>
-            <form onSubmit={handleSubmit}>
-                <input
-                    name="code"
-                    value={code}
-                    onChange={(e) => setCode(e.target.value)}
-                    placeholder="Code"
-                />
-                <input
-                    name="title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="Title"
-                />
-                <input
-                    name="description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Description"
-                />
-                <button type="submit">Submit</button>
-            </form>
+            {user ? (
+                            <form onSubmit={handleSubmit}>
+                            <input
+                                name="code"
+                                value={code}
+                                onChange={(e) => setCode(e.target.value)}
+                                placeholder="Code"
+                            />
+                            <input
+                                name="title"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                placeholder="Title"
+                            />
+                            <input
+                                name="description"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                placeholder="Description"
+                            />
+                            <button type="submit">Submit</button>
+                        </form>
+            ): <p>User not found</p>}
+
         </main>
     );
 }

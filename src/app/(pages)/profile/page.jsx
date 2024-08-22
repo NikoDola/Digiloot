@@ -3,6 +3,7 @@
 import { useUser } from "@/contexts/userContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import NavMenu from '@/components/NavMenu'
 
 export default function Profile() {
     const { user, signOut } = useUser();
@@ -24,7 +25,7 @@ export default function Profile() {
     }, [user]);
 
     return (
-        <div>
+        <main>
             <h1>Profile Page</h1>
             {isLoading ? (
                 <p>Loading...</p>
@@ -37,6 +38,7 @@ export default function Profile() {
             ) : (
                 <p>You are not logged in.</p>
             )}
-        </div>
+            <NavMenu/>
+        </main>
     );
 }
