@@ -2,10 +2,13 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { 
     signInWithPopup, 
+    signInWithEmailAndPassword, 
+    createUserWithEmailAndPassword, 
     signOut as firebaseSignOut, 
     GoogleAuthProvider, 
     GithubAuthProvider, 
     onAuthStateChanged,
+    sendEmailVerification,
     setPersistence,
     browserSessionPersistence 
 } from "firebase/auth";
@@ -21,6 +24,7 @@ export function UserProvider({ children }) {
     const googleProvider = new GoogleAuthProvider();
     const githubProvider = new GithubAuthProvider();
 
+    // Sign in with Google or GitHub
     const signIn = async (providerName) => {
         let provider;
 
@@ -59,6 +63,55 @@ export function UserProvider({ children }) {
         }
     };
 
+    // Sign in with Email and Password
+    const signInWithEmail = async (email, password) => {
+        try {
+            const result = await signInWithEmailAndPassword(auth, email, password);
+            const user = result.user;
+
+            if (user) {
+                const userRef = doc(db, "users", user.uid);
+                const userDoc = await getDoc(userRef);
+
+                if (!userDoc.exists()) {
+                    await setDoc(userRef, { 
+                        displayName: user.displayName, 
+                        email: user.email 
+                    });
+                }
+
+                setUser(user);
+            } else {
+                console.error("User not authenticated after email sign-in");
+            }
+        } catch (error) {
+            console.error("Error during email sign-in:", error);
+        }
+    };
+
+    // Sign up with Email and Password
+    const signUpWithEmail = async (email, password) => {
+        try {
+            const result = await createUserWithEmailAndPassword(auth, email, password);
+            const user = result.user;
+
+            if (user) {
+ 
+                const userRef = doc(db, "users", user.uid);
+                await setDoc(userRef, { 
+                    displayName: user.email, // No displayName in email sign up by default
+                    email: user.email 
+                });
+
+                setUser(user);
+            } else {
+                console.error("User not created after email sign-up");
+            }
+        } catch (error) {
+            console.error("Error during email sign-up:", error);
+        }
+    };
+
     const signOut = async () => {
         try {
             await firebaseSignOut(auth);
@@ -94,7 +147,7 @@ export function UserProvider({ children }) {
     }, []); 
 
     return (
-        <UserContext.Provider value={{ user, signIn, signOut }}>
+        <UserContext.Provider value={{ user, signIn, signOut, signInWithEmail, signUpWithEmail }}>
             {children}
         </UserContext.Provider>
     );
