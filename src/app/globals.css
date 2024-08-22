@@ -107,3 +107,6 @@ main{
     text-wrap: balance;
   }
 }
+input, textArea{
+  border: solid 1px black;
+}

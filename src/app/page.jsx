@@ -1,10 +1,11 @@
 "use client";
 import Image from "next/image";
-import { useEffect } from "react";
-import { useUser } from ".././ClientComponents/userContext";
+import { useEffect, useState } from "react";
+import { useUser } from "@/contexts/userContext";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
+  
   const { user, signIn } = useUser();
   const router = useRouter();
 
@@ -25,7 +26,7 @@ export default function Home() {
         />
         <div className="buttonSignUp">
           <Image
-            src={"/branding/icons/icon_apple.svg"}
+            src={"/branding/icons/icon_github.svg"}
             width={15}
             height={15}
             alt="Apple Icon"

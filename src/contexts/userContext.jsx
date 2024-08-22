@@ -1,29 +1,26 @@
-// src/contexts/UserContext.js
-
-"use client";
+"use client"
 import { createContext, useContext, useState, useEffect } from "react";
 import { 
     signInWithPopup, 
     signOut as firebaseSignOut, 
-    GoogleAuthProvider,
     onAuthStateChanged,
     setPersistence,
     browserSessionPersistence 
 } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore"; 
-import { auth, provider, db } from "../Server/firebase"; 
+import { auth, provider, db } from "@/firebase"; 
 
 const UserContext = createContext(null);
 
 export function UserProvider({ children }) {
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true); // Add a loading state
 
     const signIn = async () => {
         try {
-            const result = await signInWithPopup(auth, provider);
+            const result = await signInWithPopup(auth, provider.google);
             const user = result.user;
 
-            // Check if user is authenticated
             if (user) {
                 const userRef = doc(db, "users", user.uid);
                 const userDoc = await getDoc(userRef);
@@ -69,17 +66,19 @@ export function UserProvider({ children }) {
                     } else {
                         setUser(null); 
                     }
+                    setLoading(false); // Set loading to false once user state is updated
                 });
 
                 return () => unsubscribe();
             })
             .catch((error) => {
                 console.error("Error setting persistence:", error);
+                setLoading(false); // Ensure loading is disabled in case of error
             });
     }, []); 
 
     return (
-        <UserContext.Provider value={{ user, signIn, signOut }}>
+        <UserContext.Provider value={{ user, signIn, signOut, loading }}>
             {children}
         </UserContext.Provider>
     );

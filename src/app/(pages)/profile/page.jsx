@@ -1,6 +1,6 @@
 // This component remains the same as the previous version
 "use client";
-import { useUser } from "../../ClientComponents/userContext";
+import { useUser } from "@/contexts/userContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -11,7 +11,7 @@ export default function Profile() {
 
     const handleLogout = async () => {
         await signOut(); 
-        router.push("/"); 
+        router.push("/");
     };
 
     useEffect(() => {

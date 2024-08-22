@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { UserProvider } from "../ClientComponents/userContext";
+import { UserProvider } from "@/contexts/userContext";
 // import NavMenu from '../ClientComponents/NavMenu'
 
 
