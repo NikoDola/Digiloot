@@ -26,6 +26,7 @@ export function WrapFunction({ children }) {
     const [error, setError] = useState(null);
     const [userVerify, setUserVerify] = useState(false);
     const [lastPasswordChange, setLastPasswordChange] = useState(null);
+    const router = useRouter(); // Use useRouter at the top level
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
