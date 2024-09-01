@@ -1,166 +1,158 @@
 "use client";
-import { createContext, useContext, useState, useEffect } from "react";
+
+import { useState, useEffect, useContext, createContext } from "react";
 import { 
-    signInWithPopup, 
-    signInWithEmailAndPassword, 
-    createUserWithEmailAndPassword, 
-    signOut as firebaseSignOut, 
-    GoogleAuthProvider, 
-    GithubAuthProvider, 
-    onAuthStateChanged,
-    sendEmailVerification,
-    setPersistence,
-    browserSessionPersistence 
+  signOut,
+  sendPasswordResetEmail,
+  updatePassword,
+  createUserWithEmailAndPassword, 
+  sendEmailVerification, 
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  deleteUser,
 } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore"; 
-import { auth, db } from "@/firebase"; 
+import { auth } from '@/firebase';
+import { db } from '@/firebase'
+import { setDoc, doc, collection, deleteDoc } from "firebase/firestore";
 
-const UserContext = createContext(null);    
+export const UserContext = createContext();
 
-export function UserProvider({ children }) {
-    const [user, setUser] = useState(null);
+export function WrapFunction({ children }) {
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
+  const [userVerify, setUserVerify] = useState(false);
+  const [lastPasswordChange, setLastPasswordChange] = useState(null);
 
-    // Define providers
-    const googleProvider = new GoogleAuthProvider();
-    const githubProvider = new GithubAuthProvider();
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      if (currentUser) {
+        setUserVerify(currentUser.emailVerified);
+      }
+    });
 
-    // Sign in with Google or GitHub
-    const signIn = async (providerName) => {
-        let provider;
+    return () => unsubscribe();
+  }, []);
 
-        // Choose the provider based on providerName
-        if (providerName === 'google') {
-            provider = googleProvider;
-        } else if (providerName === 'github') {
-            provider = githubProvider;
+  const signUpWithEmail = async (email, pass, confirmPass) => {
+    if (pass !== confirmPass) {
+      setError('Passwords do not match');
+    } else if (pass.length <= 9) {
+      setError('Password needs to be at least 9 characters');
+    } else {
+      try {
+        const result = await createUserWithEmailAndPassword(auth, email, pass);
+        await sendEmailVerification(result.user);
+  
+        const colRef = collection(db, 'users'); // Reference to the 'users' collection
+        const docRef = doc(colRef, result.user.uid); // Document reference with UID as the ID
+  
+        // Set the document with the required data
+        await setDoc(docRef, { 
+          user: result.user.uid, 
+          email: result.user.email
+        });
+  
+        setUser(result.user);
+        setError(null);
+        console.log("Sign-up successful:", result.user);
+  
+        window.open('/verification', '_blank');
+      } catch (error) {
+        console.error("Sign-up failed", error);
+        if (error.code === 'auth/email-already-in-use') {
+          setError('Email already in use');
+        } else if (error.code === 'auth/weak-password') {
+          setError('Password needs to be at least 9 characters');
         } else {
-            console.error("Unsupported provider");
-            return;
+          setError('An unexpected error occurred. Please try again.');
         }
+      }
+    }
+  };
+  const changePassword = async (newPassword) => {
+  if (!user) {
+    setError('User is not authenticated.');
+    return;
+  }
 
-        try {
-            const result = await signInWithPopup(auth, provider);
-            const user = result.user;
+  const currentTime = Date.now();
+  const cooldownPeriod = 5 * 60 * 1000; // 5 minutes
 
-            // Check if user is authenticated
-            if (user) {
-                const userRef = doc(db, "users", user.uid);
-                const userDoc = await getDoc(userRef);
+  if (lastPasswordChange && currentTime - lastPasswordChange < cooldownPeriod) {
+    setError('Please wait before attempting to change your password again.');
+    return;
+  }
 
-                if (!userDoc.exists()) {
-                    await setDoc(userRef, { 
-                        displayName: user.displayName, 
-                        email: user.email 
-                    });
-                } 
+  try {
+    await updatePassword(user, newPassword);
+    setLastPasswordChange(currentTime);
+    setError(null);
+    console.log("Password updated successfully.");
+  } catch (error) {
+    console.error("Failed to update password", error);
+    if (error.code === 'auth/requires-recent-login') {
+      setError('Please log in again to update your password.');
+    } else {
+      setError('Failed to update password. Please try again.');
+    }
+  }
+  };
 
-                setUser(user);
-            } else {
-                console.error("User not authenticated after sign-in");
-            }
-        } catch (error) {
-            console.error("Error during sign-in:", error);
-        }
-    };
+  const login = async (email, password) => {
+    try {
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      if (result.user.emailVerified) {
+        setUser(result.user);
+        setUserVerify(true);
+        return result;
+      } else if (!result.user.emailVerified) {
+        setError(`Email not verified, we just sent you a verification link, please check your inbox or spam folder.`)
+        sendEmailVerification(result.user);
+      } else if (error.code === 'auth/invalid-credential') {
+        setError("Wrong email or password");
+      } else {
+        setError("An unexpected error occurred. Please try again.");
+      }
+    } catch (error) {
+      console.error("Login failed", error);
+      setError("Failed to log in. Please check your credentials and try again.");
+      throw error;
+    }
+  };
 
-    // Sign in with Email and Password
-    const signInWithEmail = async (email, password) => {
-        try {
-            const result = await signInWithEmailAndPassword(auth, email, password);
-            const user = result.user;
-            if(result.error){
-                console.log('nesho se sluci')
-            }
+  const logout = () =>{
+    signOut(auth)
+  }
 
-            if (user) {
-                const userRef = doc(db, "users", user.uid);
-                const userDoc = await getDoc(userRef);
+  const resetPassword = async(email) => {
+    sendPasswordResetEmail(auth, email)
+  }
 
-                if (!userDoc.exists()) {
-                    await setDoc(userRef, { 
-                        displayName: user.displayName, 
-                        email: user.email 
-                    });
-                }
+  const deleteUsers = async () =>{
+    const docRef = doc(db, 'users', user.uid)
+    await deleteDoc(docRef)
+    deleteUser(user)
+   
+  }
 
-                setUser(user);
-            } else {
-                console.error("User not authenticated after email sign-in");
-            }
-        } catch (error) {
-            console.error("Error during email sign-in:", error);
-        }
-    };
-
-    // Sign up with Email and Password
-    const signUpWithEmail = async (email, password) => {
-        try {
-            const result = await createUserWithEmailAndPassword(auth, email, password);
-            if(result.error){
-                console.log('nesho se sluci')
-            }
-            const user = result.user;
-
-            await sendEmailVerification(auth, user.emailVerified)
-            alert('verification email has been send')
-
-            if (user) {
-                const userRef = doc(db, "users", user.uid);
-                await setDoc(userRef, { 
-                    displayName: user.email, // No displayName in email sign up by default
-                    email: user.email 
-                });
-
-                setUser(user);
-            } else {
-                console.error("User not created after email sign-up");
-            }
-        } catch (error) {
-            console.error("Error during email sign-up:", error);
-        }
-    };
-
-    const signOut = async () => {
-        try {
-            await firebaseSignOut(auth);
-            setUser(null);
-        } catch (error) {
-            console.error("Error during sign-out:", error);
-        }
-    };
-
-    useEffect(() => {
-        setPersistence(auth, browserSessionPersistence)
-            .then(() => {
-                const unsubscribe = onAuthStateChanged(auth, async (user) => {
-                    if (user) {
-                        const userRef = doc(db, "users", user.uid);
-                        const userDoc = await getDoc(userRef);
-
-                        if (userDoc.exists()) {
-                            setUser({ ...user, ...userDoc.data() }); 
-                        } else {
-                            console.error("User not found in Firestore"); 
-                        }
-                    } else {
-                        setUser(null); 
-                    }
-                });
-
-                return () => unsubscribe();
-            })
-            .catch((error) => {
-                console.error("Error setting persistence:", error);
-            });
-    }, []); 
-
-    return (
-        <UserContext.Provider value={{ user, signIn, signOut, signInWithEmail, signUpWithEmail }}>
-            {children}
-        </UserContext.Provider>
-    );
+  return (
+    <UserContext.Provider value={{ 
+      user, 
+      signUpWithEmail, 
+      error, 
+      logout,
+      deleteUsers,
+      userVerify, 
+      login, 
+      changePassword, 
+      setError,
+      resetPassword }}>
+      {children}
+    </UserContext.Provider>
+  );
 }
 
 export function useUser() {
-    return useContext(UserContext);
+  return useContext(UserContext);
 }
