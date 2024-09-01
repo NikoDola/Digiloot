@@ -64,7 +64,6 @@ export function WrapFunction({ children }) {
       setError('Password needs to be at least 9 characters');
     } else {
       try {
-        const router = useRouter()
         const result = await createUserWithEmailAndPassword(auth, email, pass);
         await sendEmailVerification(result.user);
         setUser(result.user);
