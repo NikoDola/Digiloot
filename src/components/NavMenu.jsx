@@ -15,8 +15,8 @@ export default function NavBar(){
             <ul className="flex gap-2 justify-center">
                 <li><Link href={'/'}>Home </Link></li>
                 <li><Link href={'/profile'}>Profile </Link></li>
-                <li onClick={user && logout}><Link href={user ? '#' : '/auth/login'}>{user ? 'Logout': 'Login'}</Link></li>
-                {!user && <Link href={'/auth/signup'}>sign up</Link>}
+                <li onClick={user && logout}><Link href={user ? '#' : '/login'}>{user ? 'Logout': 'Login'}</Link></li>
+                {!user && <Link href={'/signup'}>sign up</Link>}
             </ul>
         </main>
     )
