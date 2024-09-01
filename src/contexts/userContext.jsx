@@ -15,10 +15,6 @@ import {
 import { auth, provider } from '@/firebase';
 import { db } from '@/firebase'
 import { setDoc, doc, collection, deleteDoc } from "firebase/firestore";
-import { useRouter } from "next/router";
-
-
-
 export const UserContext = createContext();
 
 export function WrapFunction({ children }) {
@@ -26,7 +22,6 @@ export function WrapFunction({ children }) {
     const [error, setError] = useState(null);
     const [userVerify, setUserVerify] = useState(false);
     const [lastPasswordChange, setLastPasswordChange] = useState(null);
-    const router = useRouter(); // Use useRouter at the top level
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -69,7 +64,7 @@ export function WrapFunction({ children }) {
         setUser(result.user);
         setError(null);
         console.log("Sign-up successful:", result.user);
-        router.push('/auth/verification'); // If using Next.js client-side routing
+        window.open('/profile')
 
       } catch (error) {
         console.error("Sign-up failed", error);
