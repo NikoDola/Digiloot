@@ -1,14 +1,24 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUser } from "@/contexts/userContext"
 import { FormEvent } from 'react';
 import  Link  from 'next/link'
 import Image from "next/image";
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
-    const { login, error, googleSign, githubSign} = useUser();
+    const { login, error, googleSign, gitHubSign, user} = useUser();
     const [showPassword, setShowPassword] = useState(false)
+    const router = useRouter();
 
+    useEffect(() => {
+        if (user) {
+            // Redirect to the profile page if the user is already logged in
+            router.push('/profile');
+        }
+    }, [user, router]);
+
+    user && window.open('/profile')
     const handleShowPassword = () =>{
         showPassword ? setShowPassword(false)  : setShowPassword(true)
         console.log(showPassword)
@@ -42,7 +52,9 @@ export default function Login() {
             <form onSubmit={Log} className="logInSignInForm">
                 <input className="input" type="text" name="email" placeholder="email" required />
                 <div className="password">
-                <Image onClick={handleShowPassword} className="icon cursor-pointer" src={showPassword ? '/branding/icons/visual.svg' : '/branding/icons/blind.svg'} height={16} width={16} alt="visual"/>
+                <div onClick={handleShowPassword}  className="w-14 h-full ">
+                <Image className="icon cursor-pointer" src={showPassword ? '/branding/icons/visual.svg' : '/branding/icons/blind.svg'} height={16} width={16} alt="visual"/>
+                </div>
                 <input className="w-full" type={showPassword ? 'text': 'password'} name="password" placeholder="password" required />
                 </div>
                
@@ -54,8 +66,14 @@ export default function Login() {
             
             <form className="logInSignInForm">
             <p className="bettweenForm">or</p>
-            <p className="buttonSignUp">Login with google</p>
-            <p className="buttonSignUp">Login with github</p>
+            <div onClick={googleSign} className="buttonSignUp">
+                <Image src={"/branding/icons/google.svg"} width={16} height={16} alt="google icon"/>
+                <p>Login with Google</p>
+            </div>
+            <div onClick={gitHubSign} className="buttonSignUp">
+                <Image src={"/branding/icons/github.svg"} width={16} height={16} alt="google icon"/>
+                <p>Login with Github</p>
+            </div>
             </form>
             {error && <p style={{ color: 'red' }}>{error}</p>}
         </main>
