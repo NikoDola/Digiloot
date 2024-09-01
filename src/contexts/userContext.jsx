@@ -15,7 +15,7 @@ import {
 import { doc, setDoc, getDoc } from "firebase/firestore"; 
 import { auth, db } from "@/firebase"; 
 
-const UserContext = createContext(null);
+const UserContext = createContext(null);    
 
 export function UserProvider({ children }) {
     const [user, setUser] = useState(null);
@@ -68,6 +68,9 @@ export function UserProvider({ children }) {
         try {
             const result = await signInWithEmailAndPassword(auth, email, password);
             const user = result.user;
+            if(result.error){
+                console.log('nesho se sluci')
+            }
 
             if (user) {
                 const userRef = doc(db, "users", user.uid);
@@ -93,10 +96,15 @@ export function UserProvider({ children }) {
     const signUpWithEmail = async (email, password) => {
         try {
             const result = await createUserWithEmailAndPassword(auth, email, password);
+            if(result.error){
+                console.log('nesho se sluci')
+            }
             const user = result.user;
 
+            await sendEmailVerification(auth, user.emailVerified)
+            alert('verification email has been send')
+
             if (user) {
- 
                 const userRef = doc(db, "users", user.uid);
                 await setDoc(userRef, { 
                     displayName: user.email, // No displayName in email sign up by default

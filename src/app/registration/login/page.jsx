@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import { useUser } from "@/contexts/userContext";
 import { useRouter } from "next/navigation";
 
@@ -9,10 +8,16 @@ export default function Home() {
   const { user, signIn } = useUser();
   const router = useRouter();
 
+  
   const handleSignIn = async (providerName) => {
     try {
-      await signIn(providerName); 
-      router.push("/profile");
+      const resault = await signIn(providerName); 
+      if(resault?.error){
+        router.push("/profile");
+      }else{
+        alert('wrong credentials')
+      }
+      
     } catch (error) {
       console.error("Error during sign-in:", error);
     }

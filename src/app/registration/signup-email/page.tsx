@@ -9,14 +9,19 @@ export default function SignInPage() {
     const [password, setPassword] = useState('');
     const router = useRouter()
 
-    const handleSignIn = () => {
-        signInWithEmail(email, password);
-        router.push('/profile')
-    };
+    const handleSignIn = async () => {
+        try {
+          await signInWithEmail(email, password);
+        } catch (error) {
+          if (error) { // Check if there's any error
+            console.log('Something happened (error during sign-inEEEEEEEEE):', error);
+          }
+        }
+      };
 
     const handleSignUp = () => {
         signUpWithEmail(email, password);
-        router.push('/profile')
+     
     };
 
     return (
