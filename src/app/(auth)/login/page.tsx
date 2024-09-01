@@ -47,25 +47,9 @@ export default function Login() {
 
     return (
         <main>
-            <Image className="logo" src='/branding/logo/snip-snip.svg' width={300} height={300} alt="Logo" />
+            <Image className="logo" src='/branding/logo/snipsnap_vertical-logo.svg' width={200} height={200} alt="Logo" />
 
             <form onSubmit={Log} className="logInSignInForm">
-                <input className="input" type="text" name="email" placeholder="email" required />
-                <div className="password">
-                <div onClick={handleShowPassword}  className="w-14 h-full ">
-                <Image className="icon cursor-pointer" src={showPassword ? '/branding/icons/visual.svg' : '/branding/icons/blind.svg'} height={16} width={16} alt="visual"/>
-                </div>
-                <input className="w-full" type={showPassword ? 'text': 'password'} name="password" placeholder="password" required />
-                </div>
-               
-                <button className="mainButton" type="submit">Login</button>
-            </form>
-            
-            <p className="my-4">Lost your password? <Link className="text-blue-500" href='/login/reset-password'> Reset your password!</Link> </p>
-            <p className="my-4"> Dont have an account? <Link className="text-blue-500" href='/login/signin'> Create one!</Link> </p>
-            
-            <form className="logInSignInForm">
-            <p className="bettweenForm">or</p>
             <div onClick={googleSign} className="buttonSignUp">
                 <Image src={"/branding/icons/google.svg"} width={16} height={16} alt="google icon"/>
                 <p>Login with Google</p>
@@ -74,6 +58,19 @@ export default function Login() {
                 <Image src={"/branding/icons/github.svg"} width={16} height={16} alt="google icon"/>
                 <p>Login with Github</p>
             </div>
+                <p className="bettweenForm">or login with email and password</p>
+                <input className="input" type="text" name="email" placeholder="email" required />
+                <div className="password">
+                <div onClick={handleShowPassword}  className="w-14 h-full ">
+                <Image className="icon cursor-pointer" src={showPassword ? '/branding/icons/visual.svg' : '/branding/icons/blind.svg'} height={16} width={16} alt="visual"/>
+                </div>
+                <input className="w-full" type={showPassword ? 'text': 'password'} name="password" placeholder="password" required />
+                </div>
+                <button className="mainButton" type="submit">Login</button>
+            </form>     
+            <p className="my-4">Lost your password? <Link className="text-blue-500" href='/login/reset-password'> Reset your password!</Link> </p>
+            <p className="my-4"> Dont have an account? <Link className="text-blue-500" href='/login/signin'> Create one!</Link> </p>          
+            <form className="logInSignInForm">
             </form>
             {error && <p style={{ color: 'red' }}>{error}</p>}
         </main>
