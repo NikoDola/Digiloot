@@ -28,7 +28,7 @@ body {
   cursor: pointer;
   padding: 1rem;
   border: solid 1px;
-  transition: background-color 0.5s ease, box-shadow 0.5s ease, gap 0.5s ease;
+  transition: background-color 0.5s ease, box-shadow 0.5s ease;
   border-radius: 0.5rem;
 }
 
@@ -51,12 +51,11 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 100%;
 }
 
 .password{
   position: relative;
-  width: 100%;
-  height: 100%;
   background:'black';
 }
 
@@ -65,11 +64,14 @@ main{
   margin: 0 auto;
 }
 
-@media (min-width:1024px){
-  main{
-    width: 30%;
-  }
+.formWrapper{
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  margin-top: 2rem;
 }
+
+
 .logo{
   margin: 0 auto;
   margin-top: 4rem;
@@ -90,6 +92,7 @@ main{
   gap: 20px;
   white-space: nowrap;
 }
+
 .bettweenForm::after{
   content: '';
   display: block;
@@ -117,8 +120,34 @@ main{
     text-wrap: balance;
   }
 }
-input, textArea{
+input, textArea {
   border: solid 1px black;
   padding: 1rem;
   border-radius: 0.5rem;
+  transition: box-shadow 0.5s, border-color 0.5s;
+  background: white;
 }
+
+input:focus {
+  border-color: transparent; /* Hides the original border */
+
+}
+
+@media (min-width:1024px){
+  .formWrapper{
+    justify-content: center;
+    gap: 4rem;
+    flex-direction: row-reverse;
+    align-items: center;
+  }
+  .bettweenForm{
+    flex-direction: column;
+  }
+  .logInSignInForm{
+    width: 35%;
+  }
+  .bettweenForm::after, .bettweenForm::before{
+    width: 0.5px;
+    height: 100px;
+  }
+  }
