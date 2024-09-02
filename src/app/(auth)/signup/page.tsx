@@ -1,40 +1,25 @@
-"use client";
-
-import { useUser } from '@/contexts/userContext'
-import { useState } from 'react';
-
+import SignupEmail from '@/components/SignupEmail';
+import LoginSocial from '@/components/LoginSocial'
+import Link from 'next/link';
 export default function Home() {
-  const { signUpWithEmail, error, user, userVerify, googleSign, gitHubSign } = useUser();
 
-  const [ hidePasRs, setHidePass, ] = useState('text')
-
-  async function getFormData(event: any) {
-    try {
-      event.preventDefault(); // Prevent the form from reloading the page
-      const formData = new FormData(event.target); // Get form data
-      const email = formData.get('email') as string;
-      const pass = formData.get('password') as string;
-      const confPass = formData.get('confirmPassword') as string;
-  
-      await signUpWithEmail(email, pass, confPass);
-  
-    } catch (err) {
-      console.log(err);
-    }
-  }
   
 
   return (
     <main>
-      <form onSubmit={getFormData}>
-        <input type="text" name="email" placeholder="Email" required />
-        <input  type={''} name="password" placeholder="Password" required />
-        <input type="text" name="confirmPassword" placeholder="Confirm Password" required />
-        <button type="submit">Sign Up</button>
-        <p className='cursor-pointer' onClick={googleSign}>Google Sign</p>
-        <p className='cursor-pointer' onClick={gitHubSign}>GitHub Sign</p>
-      </form>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-    </main>
+        <p className="text-4xl m-0 text-center ">Signup</p>
+        <p className=" text-center mt-3" >Do you have an account? <Link className="text-blue-500" href='/login'> Login!</Link> </p>
+        <div className='formWrapper'>
+                <form className='logInSignInForm'>
+                    <LoginSocial social={'google'}/>
+                    <LoginSocial social={'github'}/>
+                </form>
+                <p className="bettweenForm my-6">or</p>
+
+                <div className='logInSignInForm'>
+                    <SignupEmail/>
+                </div>
+            </div>
+        </main>
   );
 }

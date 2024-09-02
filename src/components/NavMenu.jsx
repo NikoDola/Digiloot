@@ -1,6 +1,7 @@
 "use client"
 import { useUser } from "@/contexts/userContext"
 import Link from 'next/link'
+import Image from "next/image"
 
 export default function NavBar(){
 
@@ -11,13 +12,13 @@ export default function NavBar(){
         console.log('user is not login')
     }
     return(
-        <main>
-            <ul className="flex gap-2 justify-center">
-                <li><Link href={'/'}>Home </Link></li>
-                <li><Link href={'/profile'}>Profile </Link></li>
+        <nav>
+           <Link href={'/'}> <Image src='/branding/logo/snipsnap_horizontal-logo.svg' width={150} height={150} alt="snipsnap logo"/></Link>
+            <ul className="flex gap-5 justify-center">
+                { user && <li><Link href={'/profile'}>Profile </Link></li>}
                 <li onClick={user && logout}><Link href={user ? '#' : '/login'}>{user ? 'Logout': 'Login'}</Link></li>
-                {!user && <Link href={'/signup'}>sign up</Link>}
+                {!user && <Link href={'/signup'}>Signup</Link>}
             </ul>
-        </main>
+        </nav>
     )
 }

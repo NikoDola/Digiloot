@@ -37,11 +37,13 @@ const ResetPasswordForm = () => {
     };
 
     return (
-        <form onSubmit={resetPasswordHandler}>
-            <input type="email" name="email" required placeholder="Enter your email" />
-            <button type="submit">Reset Password</button>
-            <p>{message}</p>
-        </form>
+        <main className='my-36'>
+            <form onSubmit={resetPasswordHandler} className="logInSignInForm">
+                <input type="email" name="email" required placeholder="Enter your email" />
+                <button className='mainButton' type="submit">Reset Password</button>
+                <p>{message}</p>
+            </form>
+        </main>
     );
 };
 
