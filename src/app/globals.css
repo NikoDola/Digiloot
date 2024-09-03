@@ -143,6 +143,25 @@ nav{
   margin-top: 1rem;
 }
 
+.navMenuFooter{
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  background: rgba(0, 0, 0, 0.7); /* Dark gray with transparency */
+  color: white;
+  padding: 1rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%);
+  margin-bottom: 30px;
+  border-radius: 1rem;
+  backdrop-filter: blur(10px); /* Blur effect */
+  z-index: 1000; /* Ensure the navbar is on top of other content */
+}
+
 main{
   width: 90%;
   margin: 0 auto;
@@ -168,6 +187,9 @@ footer{
   nav{
     width: 60%;
     margin-top: 1rem;
+  }
+  .navMenuFooter{
+    width: 60%;
   }
   .formWrapper{
     justify-content: center;

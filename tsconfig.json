@@ -32,7 +32,7 @@
     "**/*.ts",
     "**/*.tsx",
     "src/contexts/UserContext.jsx"
-  ],
+, "src/components/Profile.tsx"  ],
   "exclude": [
     "node_modules"
   ]
