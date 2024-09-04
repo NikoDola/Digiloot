@@ -8,7 +8,7 @@ export default function ListAllSnippets(){
 
     if(!user){
         return(
-            <p>It's loading</p>
+            <p><p>It&apos;s loading</p></p>
         )
     }else{
         return(
