@@ -4,7 +4,6 @@ import { ReactNode } from 'react';
 import { WrapFunction } from '@/contexts/userContext';
 import { Inter } from 'next/font/google';
 import NavMenuAuth from '@/components/NavMenuAuth'
-import NavMenuFooter from '@/components/NavMenuFooter'
 import './globals.css';
 import Head from 'next/head';
 
@@ -17,7 +16,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <body className={inter.className}>
         <NavMenuAuth />
           {children}
-        <NavMenuFooter/>
         </body>
       </html>
     </WrapFunction>
