@@ -10,7 +10,6 @@ interface LayoutProps {
 const ProfileLayout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div>
-
       <main>{children}</main>
       <footer>
         <NavMenuFooter />

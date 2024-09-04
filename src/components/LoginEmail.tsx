@@ -18,7 +18,7 @@ export default function Login() {
         }
     }, [user, router]);
 
-    user && window.open('/profile')
+   
     const handleShowPassword = () =>{
         showPassword ? setShowPassword(false)  : setShowPassword(true)
         console.log(showPassword)
@@ -34,7 +34,7 @@ export default function Login() {
             const result = await login(email, password);
             if (result && result.user && result.user.emailVerified) {
                 // Redirect to the profile page if the email is verified
-                window.location.href = '/profile';
+                
             } else {
                 // Set error if the email is not verified
                 console.log(error)

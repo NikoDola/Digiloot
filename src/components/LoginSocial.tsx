@@ -12,7 +12,6 @@ export default function LoginSocial({social}) {
             router.push('/profile');
         }
     }, [user, router]);
-    user && router.push('/profile')
 
     return (
         <>

@@ -6,7 +6,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-  --brand-color:#ed4a8c;
+  --brand-color:rgb(237, 74, 140);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -145,9 +145,9 @@ nav{
 
 .navMenuFooter{
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; 
   width: 90%;
-  background: rgba(0, 0, 0, 0.7); /* Dark gray with transparency */
+  background: rgba(199, 53, 112, 0.7); /* Dark gray with transparency */
   color: white;
   padding: 1rem;
   padding-left: 2rem;

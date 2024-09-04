@@ -7,8 +7,10 @@ export default function Home() {
 
   return (
     <main>
+      
      <p>Home page</p>
-     {user ? <p>Some one is loggedin</p>: <p>no one is loged in</p>}
+     {user ? <p>Some one is loggd in</p>: <p>No one is logged in</p>}
+
     </main>
   );
 }
