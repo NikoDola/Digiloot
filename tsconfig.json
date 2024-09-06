@@ -32,7 +32,7 @@
     "**/*.ts",
     "**/*.tsx",
     "src/contexts/UserContext.jsx"
-, "src/components/Profile.tsx", "src/components/MonacoEditor.js"  ],
+, "src/components/Profile.tsx", "src/components/MonacoEditor.js", "src/app/[userID]/search/page.jsx"  ],
   "exclude": [
     "node_modules"
   ]

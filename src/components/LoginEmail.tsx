@@ -14,7 +14,7 @@ export default function Login() {
     useEffect(() => {
         if (user) {
             // Redirect to the profile page if the user is already logged in
-            router.push('/profile');
+            router.push(`${user.uid}/profile`);
         }
     }, [user, router]);
 

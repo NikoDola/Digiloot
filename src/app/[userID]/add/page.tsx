@@ -1,9 +1,7 @@
 import AddingSnippets from "@/components/AddingSnippets"
-import cookie from 'cookie';
 
-export default async function AddSnippet(){
+export default async function AddSnippet({params}){
 
-    console.log(cookie)
 
     return(
         <main>

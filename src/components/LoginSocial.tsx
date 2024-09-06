@@ -9,7 +9,7 @@ export default function LoginSocial({social}) {
     const router = useRouter();
     useEffect(() => {
         if (user) {
-            router.push('/profile');
+            router.push(`${user.uid}/profile`);
         }
     }, [user, router]);
 

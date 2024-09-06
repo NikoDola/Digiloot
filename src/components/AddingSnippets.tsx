@@ -3,7 +3,7 @@ import { useUser } from "@/contexts/userContext";
 import { db } from '@/firebase';
 import { collection, doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
-
+import { useRouter } from 'next/navigation'; // Import useRouter
 
 export default function FormComponent() {
     const { user } = useUser();
@@ -12,6 +12,7 @@ export default function FormComponent() {
     const [description, setDescription] = useState('');
     const [language, setLanguage] = useState('');
     const [frameWork, setFrameWork] = useState('');
+    const router = useRouter(); // Initialize router
 
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent the default form submission
@@ -34,10 +35,17 @@ export default function FormComponent() {
                 await setDoc(newSnippetDocRef, snippetInfo);
 
                 console.log('Snippet added successfully');
-                
+
+                // Reset form fields
                 setCode('');
                 setTitle('');
                 setDescription('');
+                setFrameWork('');
+                setLanguage('');
+
+                // Redirect to the same page or a different page
+                router.refresh(); // Refresh the current page
+
             } catch (error) {
                 console.error('Error adding snippet: ', error);
             }
@@ -47,7 +55,7 @@ export default function FormComponent() {
     return (
         <main className="mb-32">
             {user ? (
-                    <form onSubmit={handleSubmit} className="logInSignInForm">
+                <form onSubmit={handleSubmit} className="logInSignInForm">
                     <input
                         name="title"
                         value={title}
@@ -62,7 +70,7 @@ export default function FormComponent() {
                     />
                     <input
                         name="language"
-                        value={description}
+                        value={language}
                         onChange={(e) => setLanguage(e.target.value)}
                         placeholder="Language"
                     />
@@ -73,7 +81,6 @@ export default function FormComponent() {
                         placeholder="Framework"
                     />
                     <textarea
-                        className="code"
                         name="code"
                         value={code}
                         onChange={(e) => setCode(e.target.value)}
@@ -81,8 +88,9 @@ export default function FormComponent() {
                     />
                     <button className="mainButton" type="submit">Submit</button>
                 </form>
-    ): <p>User not found</p>}
-
+            ) : (
+                <p>User not found</p>
+            )}
         </main>
     );
 }
