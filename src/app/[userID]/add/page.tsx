@@ -1,13 +1,33 @@
-import AddingSnippets from "@/components/AddingSnippets"
+"use client"
 
-export default async function AddSnippet({params}){
+import { db } from "@/firebase"
+import { collection, getDocs } from "firebase/firestore"
+import { useState, useEffect } from "react"
 
 
-    return(
-        <main>
-            <AddingSnippets/>
-        </main>
-    )
+export default function addLanguage(){
+  const [languageList, setLanguageList] = useState([])
 
+  useEffect(()=>{
+    const fetchData = async() =>{
+      const colRef = collection(db, 'languages')
+      const querySnapshot = await getDocs(colRef)
+      const mapping = querySnapshot.docs.map((doc)=>({
+        id: doc.id,
+        ...doc.data()
+      }))
+      setLanguageList(mapping)
     }
-  
+    fetchData();
+  }, [])
+
+  return(
+    <ul>
+      {languageList.map((element)=>(
+        <ul key={element.id}>
+          <li value={element.name}>{element.name}</li>
+        </ul>
+      ))}
+    </ul>
+  )
+}

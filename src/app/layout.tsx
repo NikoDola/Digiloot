@@ -5,7 +5,6 @@ import { WrapFunction } from '@/contexts/userContext';
 import { Inter } from 'next/font/google';
 import NavMenuAuth from '@/components/NavMenuAuth'
 import './globals.css';
-import Head from 'next/head';
 
 const inter = Inter({ subsets: ['latin'] });
 

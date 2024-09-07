@@ -1,12 +1,11 @@
 "use client"
-import { useUser } from "@/contexts/userContext";
+
 
 export default function SearchPage({ params }) {
-    const {user} = useUser()
+
   return (
     <div>
-      <h1>Search Page for User {params.userID}</h1>
-      <p>This is the search page for user {params.userID}.</p>
+      <p>Search</p>
     </div>
   );
 }

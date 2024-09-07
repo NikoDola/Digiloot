@@ -1,6 +1,7 @@
 "use client";
+
 import { useState, useEffect, useContext, createContext } from "react";
-import { useRouter } from "next/navigation";
+
 import { 
     signInWithEmailAndPassword,
     signOut,
@@ -24,9 +25,6 @@ export function WrapFunction({ children }) {
     const [error, setError] = useState(null);
     const [userVerify, setUserVerify] = useState(false);
     const [lastPasswordChange, setLastPasswordChange] = useState(null);
-    const router = useRouter();
-
-    // Monitor authentication state and set user
     useEffect(() => {
       const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
         if (currentUser) {
@@ -43,7 +41,7 @@ export function WrapFunction({ children }) {
             localStorage.setItem('userId', currentUser.uid);
 
             // Redirect to profile page after successful login and verification
-            router.push(`/${currentUser.uid}/profile`);
+            
           }
 
           // Set the cookie for logged-in users

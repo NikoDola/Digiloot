@@ -1,15 +1,17 @@
-"use client";
-import { useUser } from "@/contexts/userContext";
+"use client"
 
-export default function Home() {
-  const {user} = useUser()
-  
+
+export default async function Home() {
+
+
   return (
     <main>
-      
-     <p>Home page</p>
-     {user ? <p>{user.uid}</p>: <p>No one is logged in</p>}
-
+      <form>
+        <div className="input flex justify-between">
+          <p>Choose Language</p>
+          <div>-</div>
+        </div>
+      </form>
     </main>
   );
 }

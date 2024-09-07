@@ -19,7 +19,7 @@ export default function NavMenuAuth(){
             />
            </Link>
             <ul className="flex gap-5 justify-center">
-                { user && <li><Link href={'/profile'}>Profile </Link></li>}
+                { user && <li><Link href={'/profile'}>My Account </Link></li>}
                 <li onClick={user && logout}><Link href={user ? '#' : '/login'}>{user ? 'Logout': 'Login'}</Link></li>
                 {!user && <Link href={'/signup'}>Signup</Link>}
             </ul>
