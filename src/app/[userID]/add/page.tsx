@@ -5,7 +5,7 @@ import { collection, getDocs } from "firebase/firestore"
 import { useState, useEffect } from "react"
 
 
-export default function addLanguage(){
+export default function AddLanguage(){
   const [languageList, setLanguageList] = useState([])
 
   useEffect(()=>{
