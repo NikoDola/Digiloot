@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -81,7 +83,12 @@ textarea{
   background:'black';
 }
 
-
+.textBubble{
+  padding: 1rem;
+  border: solid 1px black;
+  width: fit-content;
+  border-radius: 0.5rem;
+}
 
 .formWrapper{
   display: flex;
@@ -140,8 +147,12 @@ textarea{
   .text-balance {
     text-wrap: balance;
   }
+
+
 }
-.input, input, textArea {
+
+
+.input,input, textArea {
   border: solid 1px black;
   padding: 1rem;
   border-radius: 0.5rem;

@@ -23,4 +23,6 @@ const storage = getStorage(app,'gs://testing23-5f4ec.appspot.com' )
 const auth = getAuth(app)
 const db = getFirestore(app)
 
+
+
 export {auth, provider, db, app, storage}

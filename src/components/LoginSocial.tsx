@@ -17,7 +17,7 @@ export default function LoginSocial({social}) {
         <>
             {social === 'google' ?      
                 <div onClick={googleSign} className="buttonSignUp">
-                    <Image src={"/branding/icons/google.svg"} width={16} height={16} alt="google icon"/>
+                    <Image src={"/branding/icons/google.svg"} width={16} height={16}  alt="google icon"/>
                     <p>Continue with Google</p>
                 </div>
                 : 

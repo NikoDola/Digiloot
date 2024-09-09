@@ -45,6 +45,7 @@ export default async function NavMenuAuth() {
                         src='/branding/icons/documents.svg'
                         width={24}
                         height={24}
+                        style={{width:'20px'}}
                         alt="documents icon"
                         className="filter invert brightness-100"
                     />

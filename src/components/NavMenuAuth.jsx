@@ -8,14 +8,15 @@ export default function NavMenuAuth(){
     const {user, logout} = useUser()
 
     return(
-        <nav>
+        <nav className="">
            <Link href={'/'}> 
            <Image 
                 src="/branding/logo/snipsnap_horizontal-logo.svg" 
                 width={150} 
-                height={150} 
+                height={50} 
                 alt="snipsnap logo" 
-                priority
+                style={{ width: '150px', height: '40px' }} // Inline styles
+                priority={true}
             />
            </Link>
             <ul className="flex gap-5 justify-center">

@@ -1,33 +1,35 @@
-"use client"
 
-import { db } from "@/firebase"
-import { collection, getDocs } from "firebase/firestore"
-import { useState, useEffect } from "react"
+import { db } from "@/firebase";
+import { cookies } from "next/headers";
+import {collection, doc, getDocs} from 'firebase/firestore'
+import WordSearcher from "@/components/WordSearcher";
+import { getUser } from "@/firebase/actions";
 
 
-export default function AddLanguage(){
-  const [languageList, setLanguageList] = useState([])
+export default async function asyncParentComponent() {
 
-  useEffect(()=>{
-    const fetchData = async() =>{
-      const colRef = collection(db, 'languages')
-      const querySnapshot = await getDocs(colRef)
-      const mapping = querySnapshot.docs.map((doc)=>({
-        id: doc.id,
-        ...doc.data()
-      }))
-      setLanguageList(mapping)
+    const cookieStore = cookies()
+    const uid = cookieStore.get('user_id')?.value
+
+        const docRef = doc(db, 'users', uid)
+        const colRef = collection(docRef, 'languages')
+        const getLang = await getDocs(colRef)
+
+        const langCollection = getLang.docs.map((item)=>({
+            id: item.id,
+            ...item.data()
+        }))
+        try {
+        } catch (error) {
+            console.error(error)
+            console.log(error)
+        }
+        return (
+            <div>
+                <form>
+                   <WordSearcher value={langCollection}/>
+                </form>
+            
+            </div>
+        );
     }
-    fetchData();
-  }, [])
-
-  return(
-    <ul>
-      {languageList.map((element)=>(
-        <ul key={element.id}>
-          <li value={element.name}>{element.name}</li>
-        </ul>
-      ))}
-    </ul>
-  )
-}

@@ -50,13 +50,17 @@ export default function Login() {
             <input type="text" name="email" placeholder="email" required />
             <div className="password">
             <div onClick={handleShowPassword} >
-                <Image className="icon cursor-pointer" src={showPassword ? '/branding/icons/visual.svg' : '/branding/icons/blind.svg'} height={16} width={16} alt="visual"/>
+                <Image className="icon cursor-pointer" 
+                src={showPassword ? '/branding/icons/visual.svg' : '/branding/icons/blind.svg'} 
+                height={16} width={16}
+                style={{ width: '1rem', height: '1rem' }} // Inline styles
+                alt="visual"/>
             </div>
             <input className="w-full" type={showPassword ? 'text': 'password'} name="password" placeholder="password" required />
             </div>
             {error && <p className="error-message" style={{ color: 'red' }}>{error}</p>}
             <button className="mainButton" type="submit">Login</button>
-            <p>Lost your password? <Link className="text-blue-500" href='/login/reset-password'> Reset your password!</Link></p>
+            <p className="mb-6">Lost your password? <Link className="text-blue-500" href='/login/reset-password'> Reset your password!</Link></p>
         </form>     
     );
 }
