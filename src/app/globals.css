@@ -11,16 +11,19 @@
   --brand-color:rgb(237, 74, 140);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-  }
-}
+
+
+
+
+
+
 
 body {
   display: flex;
   flex-direction: column;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
+
+
 
 .buttonSignUp, .mainButton{
   display: flex;
@@ -99,9 +102,7 @@ textarea{
 
 
 .logo{
-  margin: 0 auto;
-  margin-top: 4rem;
-  margin-bottom: 2rem;
+  width: 100px;
 }
 
 .icon{
@@ -147,10 +148,7 @@ textarea{
   .text-balance {
     text-wrap: balance;
   }
-
-
 }
-
 
 .input,input, textArea {
   border: solid 1px black;
@@ -162,6 +160,7 @@ textarea{
 }
 
 nav{
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -206,9 +205,17 @@ footer{
   background-color: var(--brand-color);
   bottom: 0;
 }
+.profilePicture{
+  width: 145px;
+  border-radius: 100%;
+  outline: 0.5px solid black;
+  margin: 0 auto;
+}
 
 @media (min-width:1024px){
-
+  .logo{
+    width: 150px;
+  }
   .flexibleInputs{
     display: flex;
     flex-direction: row;

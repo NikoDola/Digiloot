@@ -1,13 +1,18 @@
-"use client"
-import { useUser } from "@/contexts/userContext";
+import { getUser } from '@/firebase/actions';
 
-export default function ProfilePage({ params }) {
-  const {user} = useUser()
+
+
+export default async function ProfilePage() {
+
+  const userInfo  =  await getUser()
+  console.log(userInfo)
+
   return (
     <div>
-      <p>{user.uid}</p>
-      <h1>Profile Page for User {params.userID}</h1>
-      <p>This is the profile page for user {params.userID}.</p>
+      <img className='profilePicture' src={userInfo.profilePicture}></img>
+      <p className='text-center my-4' >Welcome {userInfo.user_name}</p>
+      
     </div>
   );
 }
+

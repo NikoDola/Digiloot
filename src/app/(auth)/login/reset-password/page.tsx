@@ -4,6 +4,7 @@ import { FormEvent, useState } from 'react';
 import { getDocs, query, where, collection } from 'firebase/firestore';
 import { db, auth } from '@/firebase'; // Adjust the import based on your setup
 import { sendPasswordResetEmail } from 'firebase/auth';
+import Link from 'next/link';
 
 const ResetPasswordForm = () => {
     const [message, setMessage] = useState<string>('');
@@ -37,11 +38,13 @@ const ResetPasswordForm = () => {
     };
 
     return (
-        <main className='my-36'>
-            <form onSubmit={resetPasswordHandler} className="logInSignInForm">
+        <main className=' my-36 '>
+            <p className="text-4xl m-0 text-center ">Reset your password</p>
+            <p className=" text-center mt-3 mb-8" >Remember your password? <Link className="text-blue-500" href='/login'> Try to login</Link> </p>
+            <form onSubmit={resetPasswordHandler} className="logInSignInForm w-1/2 mx-auto">
                 <input type="email" name="email" required placeholder="Enter your email" />
                 <button className='mainButton' type="submit">Reset Password</button>
-                <p>{message}</p>
+                <p>{message} {}</p>
             </form>
         </main>
     );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useContext, createContext } from "react";
-
+import { randomAvatar } from "@/firebase/actions";
 import { 
     signInWithEmailAndPassword,
     signOut,
@@ -15,8 +15,9 @@ import {
 } from "firebase/auth";
 import { auth, provider } from '@/firebase';
 import { db } from '@/firebase';
-import { setDoc, doc, collection, deleteDoc } from "firebase/firestore";
+import { setDoc, doc, collection, deleteDoc, getDoc } from "firebase/firestore";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 export const UserContext = createContext();
 
@@ -25,23 +26,42 @@ export function WrapFunction({ children }) {
     const [error, setError] = useState(null);
     const [userVerify, setUserVerify] = useState(false);
     const [lastPasswordChange, setLastPasswordChange] = useState(null);
+    const router = useRouter();
+
     useEffect(() => {
-      const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
         if (currentUser) {
-          setUser({
-            uid: currentUser.uid,
-            email: currentUser.email
-          });
+          // Fetch user data from Firestore
+          const docRef = doc(db, 'users', currentUser.uid);
+          const docSnap = await getDoc(docRef);
 
-          const isVerified = currentUser.emailVerified;
-          setUserVerify(isVerified);
+          if (docSnap.exists()) {
+            const userData = docSnap.data();
+            setUser({
+              uid: currentUser.uid,
+              email: currentUser.email,
+              user_name: currentUser.displayName,
+              profilePicture: userData.profilePicture
+            });
+            setUserVerify(currentUser.emailVerified);
+          } else {
+            // User document does not exist, create it
+            const profilePicture = await randomAvatar();
+            setUser({
+              uid: currentUser.uid,
+              email: currentUser.email,
+              user_name: currentUser.displayName || 'Anonymous',
+              profilePicture
+            });
 
-          if (isVerified) {
-            writingDB(currentUser); // Write user info to the DB
+            await writingDB({
+              uid: currentUser.uid,
+              email: currentUser.email,
+              profilePicture,
+              user_name: currentUser.displayName || 'Anonymous'
+            });
+
             localStorage.setItem('userId', currentUser.uid);
-
-            // Redirect to profile page after successful login and verification
-            
           }
 
           // Set the cookie for logged-in users
@@ -59,14 +79,14 @@ export function WrapFunction({ children }) {
       return () => unsubscribe();
     }, []);
 
-    // Function to write user to Firestore
     const writingDB = async (user) => {
       const colRef = collection(db, 'users');
       const docRef = doc(colRef, user.uid);
       await setDoc(docRef, { 
-        user: user.uid, 
+        userID: user.uid, 
         email: user.email,
-        user_name: user.displayName || 'Anonymous'
+        profilePicture: user.profilePicture || null,
+        user_name: user.user_name || 'Anonymous'
       });
     };
 
@@ -80,6 +100,15 @@ export function WrapFunction({ children }) {
         try {
           const result = await createUserWithEmailAndPassword(auth, email, pass);
           await sendEmailVerification(result.user);
+
+          const profilePicture = await randomAvatar();
+          await writingDB({
+            uid: result.user.uid,
+            email: result.user.email,
+            user_name: result.user.displayName || 'Anonymous',
+            profilePicture
+          });
+
           setUser(result.user);
           setError(null);
         } catch (error) {
@@ -94,7 +123,15 @@ export function WrapFunction({ children }) {
       try {
         const result = await signInWithEmailAndPassword(auth, email, password);
         if (result.user.emailVerified) {
-          setUser(result.user);
+          const docRef = doc(db, 'users', result.user.uid);
+          const docSnap = await getDoc(docRef);
+          const userData = docSnap.data();
+          setUser({
+            uid: result.user.uid,
+            email: result.user.email,
+            user_name: result.user.displayName,
+            profilePicture: userData.profilePicture
+          });
           setUserVerify(true);
         } else {
           setError('Email not verified. A verification link has been sent to your inbox.');
@@ -107,8 +144,13 @@ export function WrapFunction({ children }) {
     };
 
     // Handle logout
-    const logout = () => {
-      signOut(auth);
+    const logout = async () => {
+      try {
+        await signOut(auth); 
+        router.push('/login');
+      } catch (error) {
+        console.error("Logout failed", error);
+      }
     };
 
     // Handle Google sign-in
