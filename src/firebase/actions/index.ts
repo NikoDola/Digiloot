@@ -82,6 +82,7 @@ export async function getSnippets(): Promise<SnippetType[]> {
         })) as SnippetType[]
     } catch (error) {
         console.log('not able to get snippets' + {error})
+        console.log('fixing')
         return[]
     }
 }
